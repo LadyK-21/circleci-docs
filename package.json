@@ -73,7 +73,7 @@
     "markdownlint-rule-header-id": "0.0.3",
     "mini-css-extract-plugin": "^2.4.3",
     "prettier": "^2.4.1",
-    "sass": "^1.43.2",
+    "sass": "^1.51.0",
     "sass-loader": "^12.2.0",
     "serve": "^13.0.2",
     "slugify": "^1.6.5",
