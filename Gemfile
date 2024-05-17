@@ -15,11 +15,11 @@ gem 'htmlcompressor'
 gem 'htmlentities', '~> 4.3', '>= 4.3.4'
 
 group :jekyll_plugins do
-  gem 'jekyll-algolia', '~> 1.0'
+  gem 'jekyll-algolia', '~> 1.7', '>= 1.7.0'
   gem 'jekyll-sitemap'
   gem 'jekyll-include-cache'
-  gem 'jekyll-target-blank'
-  gem 'jekyll-toc'
+  gem 'jekyll-target-blank', '>= 2.0.2'
+  gem 'jekyll-toc', '>= 0.18.0'
   gem 'jekyll-asciidoc', github: "asciidoctor/jekyll-asciidoc"
   gem 'jekyll-last-modified-at'
   gem 'jekyll-timeago'
@@ -27,6 +27,6 @@ group :jekyll_plugins do
 end
 
 group :test, :development do
-  gem 'pronto'
+  gem 'pronto', '>= 0.11.1'
   gem 'pronto-markdownlint'
 end
