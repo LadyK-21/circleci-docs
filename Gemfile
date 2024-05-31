@@ -10,7 +10,7 @@ gem 'rake'
 gem 'dotenv'
 gem "kramdown-parser-gfm"
 gem "liquid-c"
-gem 'nokogiri', '~> 1.13'
+gem 'nokogiri', '~> 1.16', '>= 1.16.5'
 gem 'htmlcompressor'
 gem 'htmlentities', '~> 4.3', '>= 4.3.4'
 
