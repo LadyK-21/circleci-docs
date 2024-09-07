@@ -18,7 +18,7 @@
   "devDependencies": {
     "imagemin-cli": "7.0.0",
     "imagemin-pngquant": "9.0.2",
-    "markdownlint-cli2": "0.0.15",
+    "markdownlint-cli2": "0.14.0",
     "markdownlint-cli2-formatter-json": "0.0.4",
     "markdownlint-rule-header-id": "0.0.3",
     "serve": "13.0.2"
