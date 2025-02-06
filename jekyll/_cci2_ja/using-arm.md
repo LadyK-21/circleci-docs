@@ -2,13 +2,11 @@
 layout: classic-docs
 title: "Arm 実行環境の使用"
 description: "Arm 実行環境で実行するジョブの設定方法を説明します。"
-redirect_from: /ja/arm-resources/
 contentTags:
   platform:
     - クラウド
     - Server v4.x
     - Server v3.x
-    - Server v2.x
 ---
 
 Machine Executor を使用して、Arm リソースを含む Linux 仮想マシンイメージを指定し、Armリソースクラスを指定すると、ジョブで Arm 実行環境を使用できます。
@@ -68,12 +66,11 @@ Machine Executor イメージの全リストは、[CircleCI Developer Hub](https
 ## 制限事項
 {: #limitations }
 
-* 現時点では、実行ファイルが含まれる Orb の中には、Arm に**対応していない**ものがあります。 Orb の使用中に Arm 関連の問題が発生した場合は、[こちらから問題を報告してください](https://github.com/CircleCI-Public/arm-preview-docs/issues)。
+* 現時点では、実行ファイルが含まれる Orb の中には、Arm に**対応していない**ものがあります。 Orb の使用中に Arm 関連の問題が発生した場合は、[こちらから問題を報告してください](https://circleci.canny.io/cloud-feature-requests)。
 * 現時点では、32 ビット版の Arm アーキテクチャはサポートされていません。 サポート対象は 64 ビット版の `arm64` アーキテクチャのみです。
 * ジョブの実行が始まるまでに、最大 2 分のスピンアップ時間がかかることがあります。 この時間は、Arm リソースを利用するユーザーが増えるにつれ短縮されます。
 * イメージに含まれていないソフトウェアが必要な場合は、[こちらからお知らせください](https://github.com/CircleCI-Public/arm-preview-docs/issues)。
 * Server 3.xでは、VMサービスにEC2プロバイダ を使用している場合のみ、Armリソースを利用できます。 これは、GCP には Arm インスタンスが用意されていないためです。
-* 現在、Docker Executor では ARM をサポートしていません。 この機能の更新については、フィーチャーリクエスト 「[Docker Executor で ARM リソースクラスをサポートする](https://circleci.canny.io/cloud-feature-requests/p/support-arm-resource-class-on-docker-executor)」を参照してください。
 
 ### M1 Mac のサポート
 {: #m1-mac-support }

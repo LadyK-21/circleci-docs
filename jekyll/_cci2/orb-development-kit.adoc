@@ -1,19 +1,20 @@
 ---
-layout: classic-docs
-title: Orb development kit
-description: How to use CircleCI's orb development kit
-redirect_from: local-jobs
-contentTags: 
+contentTags:
   platform:
   - Cloud
-  - Server v4.x
-  - Server v3.x
+  - Server v4+
 ---
+= Orb development kit
+:page-layout: classic-docs
+:page-liquid:
+:icons: font
+:page-description: How to use CircleCI's orb development kit.
+:experimental:
 
 [#orb-development-kit]
 == Overview
 
-<<orb-intro#,Orbs>> are reusable snippets of code that help automate repeated processes, accelerate project setup, and make it easy to integrate with third-party tools. CircleCI maintains an link:https://circleci.com/developer/orbs[orb registry] with certified, partner, and third-party orbs.
+<<orb-intro#,Orbs>> are reusable snippets of code that help automate repeated processes, accelerate project setup, and make it straight forward to integrate with third-party tools. CircleCI maintains an link:https://circleci.com/developer/orbs[orb registry] with certified, partner, and third-party orbs.
 
 The orb development kit refers to a suite of tools that work together to simplify the <<orb-author#,orb development process>> when authoring your own orb. The kit provides automatic testing and deployment on CircleCI.
 

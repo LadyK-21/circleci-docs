@@ -78,7 +78,7 @@ $ yamllint ./src
 CircleCI の Local Execute を使用する場合:
 
 ```shell
-circleci local execute --job orb-tools/lint
+circleci local execute orb-tools/lint
 ```
 
 
@@ -107,7 +107,7 @@ circleci orb validate orb.yml
 
 または、CircleCI の Local Execute を使用します。
 ```shell
-circleci local execute --job orb-tools/pack
+circleci local execute orb-tools/pack
 ```
 ### ShellCheck
 {: #shellcheck }
@@ -129,7 +129,7 @@ shellcheck src/scripts/*.sh
 
 または、CircleCI の Local Execute を使用します。
 ```shell
-circleci local execute --job shellcheck/check
+circleci local execute shellcheck/check
 ```
 
 ### レビュー
@@ -197,7 +197,7 @@ bash 用単体テストの記述方法については、 [Slack Orb](https://git
 ### Orb コマンドのテスト
 {: #testing-orb-commands }
 
-デフォルトでは、新しい Orb をオーサリングすると、"greet" コマンドを備えた Orb ソースのサンプルが手に入ります。 結合テストとして、`test-deploy` ワークフローで greet コマンド (場合によっては、他のコマンド) をテストできます。 このコマンドを実行して、エラーが無く実行されているかをバリデーションすることができます。また、追加のチェックを実行することで、コマンドの機能を確認することもできます。
+デフォルトでは、新しい Orb を作成すると、"greet" コマンドを備えた Orb ソースのサンプルが手に入ります。 結合テストとして、`test-deploy` ワークフローで greet コマンド (場合によっては、他のコマンド) をテストできます。 このコマンドを実行して、エラーが無く実行されているかをバリデーションすることができます。また、追加のチェックを実行することで、コマンドの機能を確認することもできます。
 
 `test-deploy.yml` ファイルに、`command-tests` という名前のジョブが表示されます。 このサンプルジョブでは、結合テストとして 1 つまたはすべてのコマンドを実行します。
 

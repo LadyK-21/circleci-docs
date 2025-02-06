@@ -1,8 +1,8 @@
 ---
 layout: classic-docs
-title: "再利用可能な設定ファイル リファレンス ガイド"
-short-title: "再利用可能な設定ファイル リファレンス ガイド"
-description: "CircleCI 2.1 設定ファイルのリファレンス ガイド"
+title: "再利用可能な設定ファイルのリファレンスガイド"
+short-title: "再利用可能な設定ファイルのリファレンスガイド"
+description: "CircleCI 2.1 設定ファイルのリファレンスガイド"
 categories:
   - 設定ファイル
 order: 1
@@ -144,7 +144,7 @@ commands:
             - run: npm install
 ```
 
-ブール値型パラメーターの評価は、[YAML 1.1 で指定されている値](http://yaml.org/type/bool.html)に基づいています。
+ブール値型パラメーターの評価は、[YAML 1.1 で指定されている値](https://yaml.org/type/bool.html)に基づいています。
 
 * true と評価されるもの: `y`、`yes`、`true`、`on`
 * false と評価されるもの: `n`、`no`、`false`、`off`
@@ -399,7 +399,7 @@ workflows:
 ```
 {% endraw %}
 
-## 再利用可能なコマンドのオーサリング
+## 再利用可能なコマンドの作成
 {: #authoring-reusable-commands }
 
 コマンドは、`config.yml` ファイルの `commands` キーの下で宣言します。 以下の例では、文字列型パラメーター `to` を受け取る `sayhello` というコマンドを定義しています。
@@ -471,7 +471,7 @@ jobs:
 ### 特別なキー
 {: #special-keys }
 
-CircleCI では、すべての [circleci.com](http://circleci.com/ja) ユーザーが利用できる特別なキーが複数提供されており、CircleCI Server でデフォルトで使用できます。 その一部をご紹介します。
+CircleCI では、すべての [circleci.com](https://circleci.com/ja/) ユーザーが利用できる特別なキーが複数提供されており、CircleCI Server でデフォルトで使用できます。 その一部をご紹介します。
 
   * `checkout`
   * `setup_remote_docker`
@@ -520,13 +520,10 @@ sync:
         - deploy:
             command: |
                 aws s3 sync \
-                  <<parameters.from>> <<parameters.to>> <<#parameters.arguments>> \
-                  <<parameters.arguments>><</parameters.arguments>>
+                  <<parameters.from>> <<parameters.to>> <<parameters.arguments>>
             name: S3 Sync
 #...
 ```
-
-CircleCI では上記の例のように、deploy `command`で Mustache 構文を使用している場合があるのでご注意ください。
 
 この `sync` コマンドをバージョン 2.1 の `.circleci/config.yml` ファイルで呼び出すには、次の例のようにします。
 
@@ -580,7 +577,7 @@ jobs:
           arguments: --dryrun
 ```
 
-## 再利用可能な Executor のオーサリング
+## 再利用可能な Executor の作成
 {: #authoring-reusable-executors }
 
 Executor はジョブ内のステップを実行するための環境を定義します。 CircleCI の設定で `job` を宣言する際に、実行環境のタイプ (`docker`、`machine`、`macos` など) を定義します。 また、 挿入する環境変数、使用するシェル、使用する `resource_class` のサイズなどの環境パラメーターも定義します。
@@ -673,7 +670,7 @@ jobs:
       - run: echo outside the executor
 ```
 
-Orb では、Orb 内のすべてのコマンドが使用する Executor を定義することも可能です。 これにより、Orb のオーサーにより定義された実行環境内で、その Orb のコマンドを実行できます。
+Orb では、Orb 内のすべてのコマンドが使用する Executor を定義することも可能です。 これにより、Orb の作成者が定義した実行環境内で、その Orb のコマンドを実行できます。
 
 ### `config.yml` で宣言した Executor をマトリックス ジョブで使用する例
 {: #example-of-using-an-executor-declared-in-configyml-with-matrix-jobs }
@@ -825,7 +822,7 @@ jobs:
       - run: echo "Node will not be installed."
 ```
 
-## パラメーター化されたジョブのオーサリング
+## パラメーター化されたジョブの作成
 {: #authoring-parameterized-jobs }
 
 必要なパラメーターをサブキーとしてジョブに渡すことで、`config.yml` の ワークフロー定義内で、同じジョブを複数回呼び出すことができます。 使用されている構文の詳細については、上記のパラメーターに関するセクションを参照してください。
@@ -1082,7 +1079,7 @@ workflows:
 
 たとえば、`myorb/foo: { dostuff: true }` として呼び出された場合*には*一連のステップを実行するが、`myorb/foo: { dostuff: false }` として呼び出された場合は実行しないといったコマンドを Orb で定義できます。
 
-さらに、Orb のオーサーであれば、ジョブまたはコマンドの `steps` キーで条件付きステップを定義することもできます。
+さらに、Orb の作成者であれば、ジョブまたはコマンドの `steps` キーで条件付きステップを定義することもできます。
 
 ```yaml
 # config.yml 内

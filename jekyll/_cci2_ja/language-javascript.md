@@ -1,17 +1,12 @@
 ---
 layout: classic-docs
 title: "CircleCI での Node.js アプリケーションの設定"
-short-title: "JavaScript"
 description: "CircleCI  での JavaScript と Node.js を使用したビルドとテスト"
-categories:
-  - language-guides
-order: 5
 contentTags:
   platform:
     - クラウド
     - Server v4.x
     - Server v3.x
-    - Server v2.x
 ---
 
 {% include snippets/language-guided-tour-cards.md lang="Node.JS" demo_url_slug="javascript" demo_branch="master" guide_completion_time="15" sample_completion_time="10" %}
@@ -229,3 +224,4 @@ workflows:
 - [Node アプリの Heroku への継続的デプロイ](https://circleci.com/ja/blog/continuous-deployment-to-heroku/)
 - [Node.js の Azure VM への継続的デプロイ]({{site.blog_base_url}}/cd-azure-vm/)
 - [Node.js のビルドとテストスイートのタイムアウトのトラブルシューティング]({{site.support_base_url}}/hc/en-us/articles/360038192673-NodeJS-Builds-or-Test-Suites-Fail-With-ENOMEM-or-a-Timeout)
+- チュートリアル: [パイプラインを高速化するためのテスト分割](/docs/ja/test-splitting-tutorial)

@@ -1,12 +1,11 @@
 ---
 
-description: "このドキュメントでは、Amazon Web Services へのデプロイ例を紹介します。"
+description: このドキュメントでは、Amazon Web Services (AWS) へのデプロイ例を紹介します。
 contentTags:
   platform:
   - クラウド
   - Server v4.x
   - Server v3.x
-  - Server v2.x
 ---
 = AWS へのデプロイ
 :page-layout: classic-docs
@@ -15,24 +14,44 @@ contentTags:
 :toc: macro
 :toc-title:
 
-このページでは S3、ECR/ECS (Elastic Container Registry/Elastic Container Service) へのデプロイや AWS Code Deploy を使ったアプリケーションのデプロイについて説明します。
+このノウハウガイドでは、CircleCIをAmazon Web Servicesにデプロイするための設定方法について説明します。
 
-AWS S3、ECS、ECR、CodeDeploy Orb の詳細については、Orb レジストリの各ページを参照してください。
+[#introduction]
+== はじめに
+
+このページでは S3、ECR/ECS (Elastic Container Registry/Elastic Container Service) へのデプロイや AWS Code Deploy を使ったアプリのデプロイについて説明します。
+
+AWS S3 Orb、ECS Orb、ECR Orb、CodeDeploy Orb の詳細については、下記の Orb レジストリのページを参照してください。
 
 * link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-s3[AWS S3]
 * link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-ecr[AWS ECR]
 * link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-ecs[AWS ECS]
 * link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-code-deploy[AWS CodeDeploy]
 
+上記の Orb に加えて、デプロイに焦点をあてた AWS CircleCI イメージ link:https://circleci.com/developer/images/image/cimg/aws[cimg/aws] を作成しました。
+
 [#deploy-to-s3-using-the-aws-s3-orb]
 == AWS S3 Orb を使用した S3 へのデプロイ
 
 AWS S3 Orb の詳細については、link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-s3[CircleCI AWS S3 Orb] のページを参照してください。 このセクションでは、AWS S3 Orb と `version: 2.1` の設定を使っで簡単にデプロイする方法の詳細を説明します。下記では、同じ例で Orb を使用せず `version: 2` の設定を使った場合も紹介します。
 
-1. セキュリティ上のベストプラクティスとして、CircleCI 専用の新しい link:https://aws.amazon.com/iam/details/manage-users/[IAM ユーザー] を作成します。
-1. link:https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys[AWS アクセスキー] を CircleCI に追加します (アクセスキー ID を `AWS_ACCESS_KEY_ID` という変数に保存し、シークレットアクセスキーを `AWS_SECRET_ACCESS_KEY` という変数に保存します)。
-1. Orb の `sync` コマンドを使ってデプロイします。 `build` ジョブが終了し、現在のブランチが `main` である場合にのみ、ワークフローを使用してデプロイしてください。
-+
+[#create-iam-user]
+=== 1.  IAM ユーザーを作成
+
+セキュリティ上のベストプラクティスとして、CircleCI 専用の新しい link:https://aws.amazon.com/iam/details/manage-users/[IAM ユーザー] を作成します。
+
+[#add-aws-access-keys]
+=== 2.  AWSのアクセスキーを追加
+
+link:https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys[AWS アクセスキー] を CircleCI に追加します (アクセスキー ID を `AWS_ACCESS_KEY_ID` という変数に保存し、シークレットアクセスキーを `AWS_SECRET_ACCESS_KEY` という変数に保存します)。
+
+[#deploy-using-orb]
+=== 3.  Orb を使用してデプロイ
+
+Orb の `sync` コマンドを使ってデプロイします。 `build` ジョブが終了し、現在のブランチが `main` である場合にのみ、ワークフローを使用してデプロイしてください。
+
+{% include snippets/ja/add-version-number.adoc %}
+
 ```yaml
 version: 2.1
 
@@ -58,38 +77,43 @@ jobs: # Define the build and deploy jobs
           auth:
             username: mydockerhub-user
             password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    ... # build job steps omitted for brevity
-    deploy:
-    docker: # Use the Docker executor for the deploy job
-        - image: <image-name-and-tag>  # Specify the Docker image to use for the deploy job
-          auth:
-            username: mydockerhub-user
-            password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-    steps:
-        - checkout
-        - aws-s3/sync:
-            from: bucket
-            to: 's3://my-s3-bucket-name/prefix'
-            arguments: | # Optional arguments
-            --acl public-read \
-            --cache-control "max-age=86400"
-            overwrite: true # default is false
+    ...
 ```
 
 [#deploy-to-aws-s3-with-2-configuration]
-=== 2.0 の設定を使用した AWS S3 へのデプロイ
+== 2.0 の設定を使用した AWS S3 へのデプロイ
 
-1. セキュリティ上のベストプラクティスとして、CircleCI 専用の新しい link:https://aws.amazon.com/iam/details/manage-users/[IAM ユーザー] を作成します。
-1. link:https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys[AWS アクセスキー] を CircleCI に追加します (アクセスキー ID を `AWS_ACCESS_KEY_ID` という変数に保存し、シークレットアクセスキーを `AWS_SECRET_ACCESS_KEY` という変数に保存します)。
-1. `.circleci/config.yml` ファイルで、新しい `deploy` ジョブを作成します。 `deploy` ジョブで、プライマリコンテナに `awscli` をインストールするステップを追加します。
-1. link:http://docs.aws.amazon.com/cli/latest/userguide/installing.html[AWS CLI に関するドキュメント] に従って、プライマリコンテナに `awscli` をインストールします。
-1. link:https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-using.html[AWS CLI を使用] して、アプリケーションを S3 にデプロイするか、他の AWS 操作を実行します。 build ジョブが終了し、現在のブランチが `main` である場合にのみ、ワークフローを使用してデプロイしてください。
-+
+[#create-iam-user-2]
+=== 1.  IAM ユーザーを作成
+
+セキュリティ上のベストプラクティスとして、CircleCI 専用の新しい link:https://aws.amazon.com/iam/details/manage-users/[IAM ユーザー] を作成します。
+
+[#add-aws-access-keys-2]
+=== 2.  AWSのアクセスキーを追加
+
+link:https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys[AWS アクセスキー] を CircleCI に追加します (アクセスキー ID を `AWS_ACCESS_KEY_ID` という変数に保存し、シークレットアクセスキーを `AWS_SECRET_ACCESS_KEY` という変数に保存します)。
+
+[#create-deploy-job]
+=== 3.  デプロイジョブの作成
+
+`.circleci/config.yml` ファイルで、新しい `deploy` ジョブを作成します。 `deploy` ジョブで、プライマリコンテナに `awscli` をインストールするステップを追加します。
+
+[#install-awscli]
+=== 4. AWS CLI のインストール
+
+link:http://docs.aws.amazon.com/cli/latest/userguide/installing.html[AWS CLI に関するドキュメント] に従って、プライマリコンテナに `awscli` をインストールします。
+
+[#deploy-awscli]
+=== 5. AWS CLIでデプロイ
+
+link:https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-using.html[AWS CLI を使用] して、アプリケーションを S3 にデプロイするか、他の AWS 操作を実行します。 build ジョブが終了し、現在のブランチが `main` である場合にのみ、ワークフローを使用してデプロイしてください。
+
+{% include snippets/ja/add-version-number.adoc %}
+
 ```yaml
-version: 2
+version: 2.1
 
 workflows: # Define a Workflow running the build job, then the deploy job
-    version: 2
     build-deploy:
     jobs:
         - build
@@ -132,6 +156,8 @@ AWS ECR Orb を使うと、最小限の設定で AWS へのログイン、ビル
 
 下記のように `build-and-push-image` ジョブを使う場合は、環境変数 `AWS_ECR_ACCOUNT_URL`、`ACCESS_KEY_ID`、`SECRET_ACCESS_KEY`、`AWS_DEFAULT_REGION` を設定する必要があります。
 
+{% include snippets/ja/add-version-number.adoc %}
+
 ```yaml
 version: 2.1
 
@@ -155,6 +181,8 @@ workflows:
 link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-ecr[AWS ECR] Orb と link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-ecs[ECS] Orb を使って既存の AWS ECS インスタンスを簡単にアップデートすることができます。
 
 下記のように `build-and-push-image` ジョブを使う場合は、環境変数 `AWS_ECR_ACCOUNT_URL`、`ACCESS_KEY_ID`、`SECRET_ACCESS_KEY`、`AWS_DEFAULT_REGION` を設定する必要があります。
+
+{% include snippets/ja/add-version-number.adoc %}
 
 ```yaml
 version: 2.1
@@ -184,6 +212,8 @@ workflows:
 == AWS CodeDeploy
 
 link:https://circleci.com/developer/ja/orbs/orb/circleci/aws-code-deploy[AWS CodeDeploy] Orb を使用すると、AWS CodeDeploy を通じてデプロイを実行できます。
+
+{% include snippets/ja/add-version-number.adoc %}
 
 ```yaml
 version: 2.1 # use 2.1 to make use of orbs and pipelines

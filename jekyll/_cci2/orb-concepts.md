@@ -4,11 +4,9 @@ title: "Orbs Concepts"
 short-title: "Orbs Concepts"
 description: "Conceptual Overview for Orbs"
 categories: [getting-started]
-redirect_from: /using-orbs/
 verison:
 - Cloud
-- Server v4.x
-- Server v3.x
+- Server v4+
 ---
 
 * TOC
@@ -32,15 +30,12 @@ As an example, the AWS S3 orb includes a _command_ to copy a file or object to a
 version: 2.1
 
 orbs:
-  aws-s3: circleci/aws-s3@x.y.z
+  aws-s3: circleci/aws-s3@4.1.0
 
 jobs:
   build:
     docker:
       - image: 'cimg/python:3.6'
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
       - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
@@ -57,7 +52,7 @@ See the [AWS-S3 Orb](https://circleci.com/developer/orbs/orb/circleci/aws-s3#com
 ### Executors
 {: #executors }
 
-Executors are parameterized execution environments in which [jobs]({{site.baseurl}}/orb-concepts/#jobs) can be run. CircleCI provides multiple [executor options]({{site.baseurl}}/configuration-reference/#docker--machine--macos--windows-executor):
+Executors are parameterized execution environments in which [jobs]({{site.baseurl}}/orb-concepts/#jobs) can be run. CircleCI provides multiple [executor options]({{site.baseurl}}/configuration-reference/#executor-job):
 
 - Docker
 - macOS
@@ -68,7 +63,7 @@ Executors defined within orbs can be used to run jobs within your project config
 
 #### Executor definition example
 {: #executor-definition-example }
-{:.no_toc}
+
 
 {:.tab.executor.Node-Docker}
 ```yaml
@@ -77,9 +72,6 @@ description: >
   images built for CI.
 docker:
   - image: 'cimg/node:<<parameters.tag>>'
-    auth:
-      username: mydockerhub-user
-      password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 parameters:
   tag:
     default: '13.11'
@@ -100,9 +92,6 @@ description: >
   https://hub.docker.com/r/cimg/ruby/tags
 docker:
   - image: 'cimg/ruby:<< parameters.tag >>'
-    auth:
-      username: mydockerhub-user
-      password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 parameters:
   tag:
     default: '2.7'
@@ -113,7 +102,7 @@ parameters:
 
 In the [Node orb](https://circleci.com/developer/orbs/orb/circleci/node), for example, a parameterized Docker-based executor is provided, through which you can set the Docker tag. This provides a simple way to test applications against any version of Node.js when used with the Node orb's [test job](https://circleci.com/developer/orbs/orb/circleci/node#usage-run_matrix_testing).
 
-For more information, see the guide to [Authoring Reusable Executors]({{site.baseurl}}/reusing-config/#authoring-reusable-executors) and the registry page for the [Node Orb](https://circleci.com/developer/orbs/orb/circleci/node#executors-default).
+For more information, see the guide to [Authoring Reusable Executors]({{site.baseurl}}/reusing-config/#authoring-reusable-executors) and example for the [`executor` parameter type](/docs/reusing-config/#executor). Also, see the registry page for the [Node Orb](https://circleci.com/developer/orbs/orb/circleci/node#executors-default).
 
 ### Jobs
 {: #jobs }
@@ -207,7 +196,7 @@ To avoid negatively impacting a user's CI process, orb authors should strictly a
 
 ### Production orbs
 {: #production-orbs }
-{:.no_toc}
+
 
 Production orbs are immutable and can be found on the [Orb Registry](https://circleci.com/developer/orbs).
 
@@ -220,20 +209,20 @@ Production orbs are immutable and can be found on the [Orb Registry](https://cir
 
 ### Development orbs
 {: #development-orbs }
-{:.no_toc}
+
 
 Development orbs are temporary overwrite-able orb tag versions, useful for rapid development and testing prior to deploying a semver deployed production change.
 
+- A Development orb can only be published if the orb has an initial semver deployed production version
 - Development orbs are mutable, can be overwritten, and automatically expire 90 days after they are published
 - Version string must begin with `dev:` followed by any string, for example, `<namespace>/<orb>@dev:my-feature-branch`
 - Development orbs may be published by any member of the namespace organization
-- Will not appear on the Orb Registry
 - Open source, released under [MIT license](https://circleci.com/developer/orbs/licensing).
 - Available via CircleCI CLI (if the development tag name is known)
 
 ### Inline orbs
 {: #inline-orbs }
-{:.no_toc}
+
 
 Inline orbs are defined directly within the user's config, are completely local and scoped to the individual project.
 
@@ -385,7 +374,7 @@ jobs:
 
 ## See also
 {: #see-also }
-{:.no_toc}
+
 
 - Refer to [Orb Introduction]({{site.baseurl}}/orb-intro/) for a high-level overview of CircleCI orbs.
 - Refer to [Orbs Reference]({{site.baseurl}}/reusing-config/) for detailed reference information about Orbs, including descriptions of commands, jobs and executors.
